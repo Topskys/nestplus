@@ -3,8 +3,7 @@ module.exports = {
   parserOptions: {
     project: 'tsconfig.json',
     tsconfigRootDir: __dirname,
-    sourceType: 'module',
-    ecmaVersion: 'latest',
+    sourceType: 'module'
   },
   plugins: [
     '@typescript-eslint/eslint-plugin',
@@ -20,7 +19,7 @@ module.exports = {
     // 使用prettier格式化代码
     'prettier',
     // 整合typescript-eslint与prettier
-    'plugin:prettier/recommended',
+    // 'plugin:prettier/recommended',
     // airbnb规范
     // 'airbnb-base',
     // // 兼容typescript的airbnb规范
@@ -67,17 +66,17 @@ module.exports = {
       },
     ],
     // 导入的依赖不必一定要在dependencies的文件
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: [
-          '**/*.test.{ts,js}',
-          '**/*.spec.{ts,js}',
-          './test/**.{ts,js}',
-          './scripts/**/*.{ts,js}',
-        ],
-      },
-    ],
+    // 'import/no-extraneous-dependencies': [
+    //   'error',
+    //   {
+    //     devDependencies: [
+    //       '**/*.test.{ts,js}',
+    //       '**/*.spec.{ts,js}',
+    //       './test/**.{ts,js}',
+    //       './scripts/**/*.{ts,js}',
+    //     ],
+    //   },
+    // ],
   },
   settings: {
     extensions: [
