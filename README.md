@@ -89,3 +89,6 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 [【【旧课】第二集:基本数据操作】](https://www.bilibili.com/video/BV1mT411u76H/?p=2&share_source=copy_web&vd_source=d50c6b3216dda73ea5961ad06d492fa2)
 
 [Nestjs最佳实践](https://3rcd.com/wiki/nestjs-practise/chapter2)
+
+## 插件
+配合vscode的thunder client插件使用，方便api调试
