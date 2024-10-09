@@ -1,0 +1,2 @@
+# 在git暂存区执行代码质量检查和格式化
+npx lint-staged
