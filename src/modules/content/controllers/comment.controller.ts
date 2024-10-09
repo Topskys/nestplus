@@ -26,8 +26,7 @@ export class CommentController {
             new ValidationPipe({
                 transform: true,
                 forbidUnknownValues: true,
-                validationError: { target: false },
-                groups: ['create'],
+                validationError: { target: false }
             }),
         )
         data: CreateCommentDto,
