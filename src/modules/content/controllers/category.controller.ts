@@ -7,9 +7,14 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
+import {
+  CreateCategoryDto,
+  QueryCategoryDto,
+  UpdateCategoryDto,
+} from '../dtos';
 import { CategoryService } from '../services';
 
 @Controller('categories')
@@ -17,6 +22,21 @@ export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
   @Get()
+  // 分页查询
+  async list(
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        forbidUnknownValues: true,
+        validationError: { target: false },
+      }),
+    )
+    query: QueryCategoryDto,
+  ) {
+    return this.categoryService.paginate(query);
+  }
+
+  @Get('tree')
   async index() {
     return this.categoryService.findTrees();
   }

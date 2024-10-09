@@ -46,4 +46,10 @@ export class CategoryEntity extends BaseEntity {
   // 分类与文章多对多关联
   @ManyToMany((type) => PostEntity, (post) => post.categories)
   posts!: PostEntity[];
+
+  @Column({ comment: '分类排序', default: 0 })
+  order!: number;
+
+  // 虚拟字段
+  level = 0;
 }

@@ -18,7 +18,7 @@ export class CreateCommentDto {
   @MaxLength(1000, { message: '评论内容不能超过$constraint1个字符' })
   @IsNotEmpty({ message: '评论内容不能为空' })
   body!: string;
-  
+
   @IsUUID(undefined, { message: '父分类ID格式不正确' })
   @ValidateIf((p) => p.parent !== null && p.parent)
   @IsOptional()

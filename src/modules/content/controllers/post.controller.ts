@@ -7,10 +7,10 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreatePostDto } from '../dtos/create-post.dto';
-import { UpdatePostDto } from '../dtos/update-post.dto';
+import { CreatePostDto, QueryPostDto, UpdatePostDto } from '../dtos';
 import { PostService } from '../services/post.service';
 
 // 控制器URL的前缀
@@ -18,11 +18,26 @@ import { PostService } from '../services/post.service';
 export class PostController {
   constructor(protected postService: PostService) {}
 
+  // 通过分页查询数据
+  @Get()
+  async index(
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        forbidUnknownValues: true,
+        validationError: { target: false },
+      }),
+    )
+    { page, limit, ...params }: QueryPostDto,
+  ) {
+    return await this.postService.paginate(params, { page, limit });
+  }
+
   /**
    * 查询所有文章
    */
-  @Get()
-  async index() {
+  @Get('all')
+  async findAll() {
     return this.postService.findList();
   }
 

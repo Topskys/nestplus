@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { OneToMany, JoinTable } from 'typeorm';
+import { PostBodyType } from '@/modules/core/constants';
 import { CategoryEntity } from './category.entity';
 import { CommentEntity } from './comment.entity';
 
@@ -66,4 +67,18 @@ export class PostEntity extends BaseEntity {
   // 评论数量
   // 虚拟字段,在Repository中通过QueryBuilder设置
   commentCount!: number;
+
+  @Column({ comment: '发布时间', type: 'varchar', nullable: true })
+  publishedAt?: Date | null;
+
+  @Column({ comment: '文章排序', default: 0 })
+  customOrder!: number;
+
+  @Column({
+    comment: '文章类型',
+    type: 'enum',
+    enum: PostBodyType,
+    default: PostBodyType.MD,
+  })
+  type!: PostBodyType;
 }
