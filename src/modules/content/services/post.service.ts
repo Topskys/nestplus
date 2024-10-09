@@ -1,15 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { isNil, omit } from 'lodash';
 import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
-import { In, IsNull, Not, SelectQueryBuilder } from 'typeorm';
+import {
+  EntityNotFoundError,
+  In,
+  IsNull,
+  Not,
+  SelectQueryBuilder,
+} from 'typeorm';
 import { PostOrderType } from '@/modules/core/constants';
 import { QueryHook } from '@/modules/core/types';
-import { CreatePostDto } from '../dtos/create-post.dto';
-import { QueryPostDto } from '../dtos/query-post.dto';
-import { UpdatePostDto } from '../dtos/update-post.dto';
+import { CreatePostDto, UpdatePostDto, QueryPostDto } from '../dtos';
 import { PostEntity } from '../entities';
-import { CategoryRepository } from '../repositories';
-import { PostRepository } from '../repositories/post.repository';
+import { CategoryRepository, PostRepository } from '../repositories';
 import { CategoryService } from './category.service';
 
 // 文章查询接口
@@ -38,7 +41,7 @@ export class PostService {
       })
       .getOne();
     if (isNil(item)) {
-      throw new NotFoundException(`Post ${id} not exists!`);
+      throw new EntityNotFoundError(PostEntity, `Post ${id} not exists!`);
     }
     return item;
   }
@@ -74,7 +77,8 @@ export class PostService {
   // 删除文章
   async delete(id: string) {
     const post = await this.postRepository.findOne({ where: { id } });
-    if (!post) throw new NotFoundException(`Post ${id} not exists!`);
+    if (!post)
+      throw new EntityNotFoundError(PostEntity, `Post ${id} not exists!`);
     return await this.postRepository.remove(post);
   }
 

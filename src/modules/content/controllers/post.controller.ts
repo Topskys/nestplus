@@ -8,10 +8,9 @@ import {
   Patch,
   Post,
   Query,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CreatePostDto, QueryPostDto, UpdatePostDto } from '../dtos';
-import { PostService } from '../services/post.service';
+import { PostService } from '../services';
 
 // 控制器URL的前缀
 @Controller('posts')
@@ -21,13 +20,7 @@ export class PostController {
   // 通过分页查询数据
   @Get()
   async index(
-    @Query(
-      new ValidationPipe({
-        transform: true,
-        forbidUnknownValues: true,
-        validationError: { target: false },
-      }),
-    )
+    @Query()
     { page, limit, ...params }: QueryPostDto,
   ) {
     return await this.postService.paginate(params, { page, limit });
@@ -56,15 +49,7 @@ export class PostController {
    */
   @Post()
   async store(
-    @Body(
-      new ValidationPipe({
-        transform: true,
-        forbidUnknownValues: true,
-        // 不在错误中暴露target
-        validationError: { target: false },
-        groups: ['create'],
-      }),
-    )
+    @Body()
     data: CreatePostDto,
   ) {
     return await this.postService.create(data);
@@ -76,14 +61,7 @@ export class PostController {
    */
   @Patch()
   async update(
-    @Body(
-      new ValidationPipe({
-        transform: true,
-        forbidUnknownValues: true,
-        validationError: { target: false }, // 不在错误中暴露target
-        groups: ['update'],
-      }),
-    )
+    @Body()
     data: UpdatePostDto,
   ) {
     return await this.postService.update(data);

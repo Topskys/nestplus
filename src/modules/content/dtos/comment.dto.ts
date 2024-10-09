@@ -8,8 +8,10 @@ import {
   MaxLength,
   ValidateIf,
 } from 'class-validator';
+import { DtoValidation } from '@/modules/core/decorators';
 
 @Injectable()
+@DtoValidation({ groups: ['create'] })
 export class CreateCommentDto {
   @IsUUID(undefined, { message: '文章ID格式错误' })
   @IsDefined({ message: '评论文章ID必须指定' })

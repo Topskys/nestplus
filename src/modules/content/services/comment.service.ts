@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isNil } from 'lodash';
-import { TreeRepository } from 'typeorm';
+import { EntityNotFoundError, TreeRepository } from 'typeorm';
 import { CreateCommentDto } from '../dtos';
 import { CommentEntity } from '../entities';
 import { PostRepository } from '../repositories';
@@ -38,7 +38,8 @@ export class CommentService {
 
   async delete(id: string) {
     const comment = await this.commentRepository.findOne({ where: { id } });
-    if (!comment) throw new NotFoundException(`Comment ${id} not found!`);
+    if (!comment)
+      throw new EntityNotFoundError(CommentEntity, `Comment ${id} not found!`);
     return await this.commentRepository.remove(comment);
   }
 
@@ -46,14 +47,18 @@ export class CommentService {
     if (!id) return null;
     const parent = await this.commentRepository.findOne({ where: { id } });
     if (!parent)
-      throw new NotFoundException(`Parent comment ${id} not exists!`);
+      throw new EntityNotFoundError(
+        CommentEntity,
+        `Parent comment ${id} not exists!`,
+      );
     return parent;
   }
 
   async getPost(id: string) {
     const post = await this.postRepository.findOne({ where: { id } });
     if (isNil(post))
-      throw new NotFoundException(
+      throw new EntityNotFoundError(
+        CommentEntity,
         `The post ${post} which comment belongs not exists!`,
       );
     return post;

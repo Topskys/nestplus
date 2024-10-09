@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { isNil, omit } from 'lodash';
-import { EntityManager } from 'typeorm';
+import { EntityManager, EntityNotFoundError } from 'typeorm';
 import { manualPaginate } from '@/modules/core/helpers';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
-import { QueryCategoryDto } from '../dtos/query-category.dto';
+import { QueryCategoryDto } from '../dtos';
+import { CategoryEntity } from '../entities';
 import { CategoryRepository } from '../repositories';
 
 @Injectable()
@@ -63,7 +64,10 @@ export class CategoryService {
   async delete(id: string) {
     const category = await this.categoryRepository.findOne({ where: { id } });
     if (!category) {
-      throw new NotFoundException(`Category ${id} not exists!`);
+      throw new EntityNotFoundError(
+        CategoryEntity,
+        `Category ${id} not exists!`,
+      );
     }
     await this.categoryRepository.remove(category);
     return category;
@@ -72,8 +76,12 @@ export class CategoryService {
   protected async getParent(id?: string) {
     if (!id) return null;
     const parent = await this.categoryRepository.findOne({ where: { id } });
-    if (!parent)
-      throw new NotFoundException(`Parent category ${id} not exists!`);
+    if (!parent) {
+      throw new EntityNotFoundError(
+        CategoryEntity,
+        `Parent category ${id} not exists!`,
+      );
+    }
     return parent;
   }
 }

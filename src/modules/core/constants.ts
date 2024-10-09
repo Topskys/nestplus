@@ -14,3 +14,5 @@ export enum PostOrderType {
   COMMENT_COUNT = 'commentCount',
   CUSTOM = 'custom',
 }
+
+export const DTO_VALIDATION_OPTIONS = 'DTO_VALIDATION_OPTIONS';

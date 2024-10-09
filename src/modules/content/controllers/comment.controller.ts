@@ -6,7 +6,7 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
-  ValidationPipe,
+  SerializeOptions,
 } from '@nestjs/common';
 import { CreateCommentDto } from '../dtos';
 import { CommentService } from '../services';
@@ -16,19 +16,14 @@ export class CommentController {
   constructor(private commentService: CommentService) {}
 
   @Get()
+  @SerializeOptions({})
   async index() {
     return await this.commentService.find();
   }
 
   @Post()
   async store(
-    @Body(
-      new ValidationPipe({
-        transform: true,
-        forbidUnknownValues: true,
-        validationError: { target: false },
-      }),
-    )
+    @Body()
     data: CreateCommentDto,
   ) {
     return await this.commentService.create(data);
