@@ -1,10 +1,4 @@
-import {
-  DynamicModule,
-  Module,
-  ModuleMetadata,
-  Provider,
-  Type,
-} from '@nestjs/common';
+import { DynamicModule, ModuleMetadata, Provider, Type } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import {
   getDataSourceToken,
@@ -12,36 +6,48 @@ import {
   TypeOrmModuleOptions,
 } from '@nestjs/typeorm';
 import { DataSource, ObjectType } from 'typeorm';
+
 import { CUSTOM_REPOSITORY_METADATA } from './constants';
+import {
+  ModelExistConstraint,
+  UniqueConstraint,
+  UniqueExistConstraint,
+  UniqueTreeConstraint,
+  UniqueTreeExistConstraint,
+} from './constraints';
 import { AppFilter, AppInterceptor, AppPipe } from './providers';
 
-@Module({
-  providers: [
-    {
-      provide: APP_PIPE,
-      useFactory: () =>
-        new AppPipe({
-          transform: true,
-          forbidUnknownValues: true,
-          validationError: { target: false },
-        }),
-    },
-    {
-      provide: APP_FILTER,
-      useClass: AppFilter,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: AppInterceptor,
-    },
-  ],
-})
 export class CoreModule {
   public static forRoot(options: TypeOrmModuleOptions) {
     const imports: ModuleMetadata['imports'] = [TypeOrmModule.forRoot(options)];
+    const providers: ModuleMetadata['providers'] = [
+      {
+        provide: APP_PIPE,
+        useFactory: () =>
+          new AppPipe({
+            transform: true,
+            forbidUnknownValues: true,
+            validationError: { target: false },
+          }),
+      },
+      {
+        provide: APP_FILTER,
+        useClass: AppFilter,
+      },
+      {
+        provide: APP_INTERCEPTOR,
+        useClass: AppInterceptor,
+      },
+      ModelExistConstraint,
+      UniqueConstraint,
+      UniqueExistConstraint,
+      UniqueTreeConstraint,
+      UniqueTreeExistConstraint,
+    ];
     return {
       global: true,
       imports,
+      providers,
       module: CoreModule,
     };
   }
@@ -70,6 +76,7 @@ export class CoreModule {
     }
 
     return {
+      global: true,
       exports: providers,
       module: CoreModule,
       providers,

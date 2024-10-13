@@ -1,24 +1,25 @@
-import {
-  DataSource,
-  EntitySubscriberInterface,
-  EventSubscriber,
-  LoadEvent,
-} from 'typeorm';
+import { DataSource, EventSubscriber, LoadEvent } from 'typeorm';
+
 import { PostBodyType } from '@/modules/core/constants';
+
+import { BaseSubscriber } from '@/modules/core/crud';
+
+import { SubscriberSetting } from '@/modules/core/types';
+
 import { PostEntity } from '../entities';
+import { PostRepository } from '../repositories';
 import { SanitizeService } from '../services';
 
 @EventSubscriber()
-export class PostSubscriber implements EntitySubscriberInterface<PostEntity> {
+export class PostSubscriber extends BaseSubscriber<PostEntity> {
+  protected entity = PostEntity;
+  protected setting: SubscriberSetting = {};
   constructor(
-    dataSource: DataSource,
+    protected dataSource: DataSource,
     protected sanitizeService: SanitizeService,
+    protected postRepository: PostRepository,
   ) {
-    dataSource.subscribers.push(this);
-  }
-
-  listenTo() {
-    return PostEntity;
+    super(dataSource, postRepository);
   }
 
   /**

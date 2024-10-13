@@ -3,7 +3,7 @@ module.exports = {
   parserOptions: {
     project: 'tsconfig.json',
     tsconfigRootDir: __dirname,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   plugins: [
     '@typescript-eslint/eslint-plugin',
@@ -61,7 +61,7 @@ module.exports = {
           },
         ],
         alphabetize: { order: 'asc', caseInsensitive: false },
-        // 'newlines-between': 'always-and-inside-groups',
+        'newlines-between': 'always-and-inside-groups',
         warnOnUnassignedImports: true,
       },
     ],

@@ -3,7 +3,10 @@ import {
   ObjectLiteral,
   Pagination,
 } from 'nestjs-typeorm-paginate';
-import { PaginateDto } from './types';
+
+import { SelectQueryBuilder } from 'typeorm';
+
+import { OrderQueryType, PaginateDto } from './types';
 
 /**
  * 用于请求验证中的number数据转义
@@ -80,4 +83,19 @@ export function manualPaginate<T extends ObjectLiteral>(
     itemsPerPage: limit,
   };
   return { items, meta };
+}
+
+/**
+ * 根据查询参数生成排序条件（未完成）
+ */
+export function getOrderByQuery(
+  qb: SelectQueryBuilder<any>,
+  qbName: string,
+  orderBy?: OrderQueryType,
+) {
+  if (orderBy) {
+    const [key, value] = Object.entries(orderBy)[0];
+    qb.orderBy(`${qbName}.${key}`, value as any);
+  }
+  return qb;
 }
