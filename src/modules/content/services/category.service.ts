@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { isNil, omit } from 'lodash';
 import { EntityManager, EntityNotFoundError } from 'typeorm';
+
 import { manualPaginate } from '@/modules/core/helpers';
+
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
 import { QueryCategoryDto } from '../dtos';
 import { CategoryEntity } from '../entities';
@@ -62,7 +64,9 @@ export class CategoryService {
   }
 
   async delete(id: string) {
-    const category = await this.categoryRepository.findOne({ where: { id } });
+    const category = await this.categoryRepository.findOne({
+      where: { id },
+    });
     if (!category) {
       throw new EntityNotFoundError(
         CategoryEntity,

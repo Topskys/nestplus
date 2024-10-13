@@ -4,6 +4,7 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { useContainer } from 'class-validator';
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -11,7 +12,9 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  useContainer(app.select(AppModule), {
+    fallbackOnErrors: true,
+  });
   await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

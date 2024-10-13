@@ -1,4 +1,4 @@
- {
+{
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"
@@ -7,8 +7,9 @@
     "typescript.suggest.jsdoc.generateReturns": false,
     "typescript.tsserver.experimental.enableProjectDiagnostics": true,
     "typescript.tsdk": "node_modules/typescript/lib",
-    // "eslint.packageManager": "pnpm",
-    // "stylint.packageManager": "pnpm",
     "npm.packageManager": "pnpm",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
 }

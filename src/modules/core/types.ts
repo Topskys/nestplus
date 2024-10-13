@@ -1,6 +1,6 @@
 import { FindTreeOptions, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 
-import { OrderType } from './constants';
+import { OrderType, QueryTrashMode } from './constants';
 
 /**
  * 为query添加查询的回调函数接口
@@ -44,11 +44,32 @@ export type TreeQueryParams<E extends ObjectLiteral> = FindTreeOptions &
 /**
  * 服务类数据列表查询类型
  */
-export type QueryListParams<E extends ObjectLiteral> = TreeQueryParams<E>;
+export type QueryListParams<E extends ObjectLiteral> = Omit<
+  TreeQueryParams<E>,
+  'withTrashed'
+> & {
+  trashed?: `${QueryTrashMode}`;
+};
 
 /**
  * 订阅设置属性
  */
 export type SubscriberSetting = {
+  // 监听的模型是否为树模型
   tree?: boolean;
+  // 是否支持软删除
+  trash?: boolean;
 };
+
+/**
+ * 软删除DTO接口
+ */
+export interface TrashedDto {
+  trashed?: QueryTrashMode;
+}
+
+export interface QueryParams<E extends ObjectLiteral> {
+  addQuery?: (query: SelectQueryBuilder<E>) => SelectQueryBuilder<E>;
+  orderBy?: OrderQueryType;
+  withTrashed?: boolean;
+}

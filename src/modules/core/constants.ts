@@ -39,3 +39,9 @@ export enum EnvironmentType {
   TEST = 'test',
   PREVIEW = 'preview',
 }
+
+export enum QueryTrashMode {
+  ALL = 'all', // 包含已软删除和未软删除的数据
+  ONLY = 'only', // 只包含软删除的数据
+  NONE = 'none', // 只包含未软删除的数据
+}
